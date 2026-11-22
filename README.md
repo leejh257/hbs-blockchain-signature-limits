@@ -20,6 +20,7 @@ The measurement counts how many on-chain signatures each key has produced over t
 | `costmodel/search.py` | Stage-wise exhaustive parameter search, stages S1 to S5 (Section 5.1) |
 | `costmodel/octopus_pmf.py` | Size distribution of the Octopus authentication set, for the PORS+FP grinding work (MIT, from PORS-FP) |
 | `costmodel/reproduce.py` | Checks the model and the search against the numbers of Sections 5 and 7 |
+| `CORPUS.md` | The 46 works of the systematization, by category and search stage, with full references (Section 2.1) |
 
 ## Definitions
 
@@ -93,6 +94,7 @@ Because the public datasets keep growing, a new run without the end date returns
 | Table 7 (keys reaching overuse thresholds, now and over 30 years) | `tail` rows, `table7.py` |
 | Table 8 (recommended budgets by user type) | `table7.py` output |
 | Section 6.1 nonce check | `n_mismatch` in `eth_all.csv` |
+| Section 2.1 (literature corpus) | `CORPUS.md` |
 | Section 5.1 (baseline costs, validation) | `costmodel/reproduce.py` |
 | Tables 3 and 4, stages S1 to S5 | `costmodel/search.py` |
 | Section 5.4 (SP 800-230 comparison) | `costmodel/model.py`, checked by `reproduce.py` |
@@ -107,6 +109,7 @@ The overuse table and lifetime extrapolation printed by `analyze_c3.py` use an e
 | v1.0 | Queries, results and `analyze_c3.py` |
 | v1.1 | `table7.py` added; Table 7 computed from `tail` rows with unrounded thresholds; README updated. Data and queries unchanged. |
 | v1.2 | `costmodel/` added: cost model, parameter search (S1 to S5) and reproduction checks for Sections 5 and 7. Data, queries and analysis scripts unchanged. |
+| v1.3 | `CORPUS.md` added: the literature corpus of the systematization, moved from the appendix of the paper. Code and data unchanged. |
 
 ## License
 
