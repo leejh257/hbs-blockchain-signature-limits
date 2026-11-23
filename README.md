@@ -15,6 +15,7 @@ The measurement counts how many on-chain signatures each key has produced over t
 | `data/btc_all.csv` | Result of `btc_all.sql` |
 | `data/eth_all.csv` | Result of `eth_all.sql` |
 | `analysis/analyze_c3.py` | Quantiles, CCDF and CCDF figure from a result CSV (Table 5, Fig. 2) |
+| `analysis/fig1.py` | Waterfall decomposition of the signature size at a budget of 2^30, from the sizes of Table 3 (Fig. 1) |
 | `analysis/table7.py` | Overuse thresholds against measured and projected per-key counts (Table 7, Sections 6.4 and 7) |
 | `costmodel/model.py` | Size, compression-call costs and security of SLH-DSA, WOTS+C, FORS+C and PORS+FP (Sections 3.2, 3.3 and 5.1) |
 | `costmodel/search.py` | Stage-wise exhaustive parameter search, stages S1 to S5 (Section 5.1) |
@@ -34,14 +35,14 @@ The measurement counts how many on-chain signatures each key has produced over t
 
 ## Cost model and parameter search
 
-`costmodel/` reimplements the public cost model of [SPHINCS-Parameters](https://github.com/BlockstreamResearch/SPHINCS-Parameters) (reference [8] of the paper) in Python, and adds the stage-wise search of Section 5.1.
+`costmodel/` reimplements the public cost model of [SPHINCS-Parameters](https://github.com/BlockstreamResearch/SPHINCS-Parameters) (reference [9] of the paper) in Python, and adds the stage-wise search of Section 5.1.
 
 - **Version of the reference model.** Costs follow SPHINCS-Parameters at commit `3172178` (2026-11-16), before the "top layer saving" change of 2026-11-17. With that version the baseline SLH-DSA-SHA2-128s costs 2,218,486 compressions to sign, as in the paper. `TOP_SAVE = True` in `model.py` follows the later version (2,218,200).
 - **Costs.** SHA-256 compression calls with the PK.seed midstate cached. Verification is the mean over messages (2,193 for the baseline).
 - **Security.** Equation (2) of the paper for FORS and FORS+C, and the subset-forgery bound of SPHINCS-Parameters for PORS+FP, capped at 128 bits.
 - **Pruning budget.** The search uses the rule of Section 5.1: the smallest `mmax` that keeps signing within the cap. `model.wc_porsfp_kn` applies the rule of Kudinov and Nick (the first `mmax` from (k−1)·a − 22 whose signing costs less than 1.11 times signing with FORS+C), which reproduces their published sets.
 - **Grid.** h from q − 12 to q + 14; d from 1 to 25 with h/d ≤ 22; a from 3 to 24; w ∈ {4, 16, 256} (16 only in S1); for each (h, a) the smallest k that reaches 128 bits, and for PORS+FP also the next three.
-- **Not included.** S6 (BPORS+FP) and S7 (BPORS-C+BFP) need the coverage bounds of references [5] and [6]; their sizes in Tables 3 and 4 are not computed here.
+- **Not included.** S6 (BPORS+FP) and S7 (BPORS-C+BFP) need the coverage bounds of references [6] and [7]; their sizes in Tables 3 and 4 are not computed here.
 
 Run from the repository root:
 

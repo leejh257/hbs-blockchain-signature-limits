@@ -4,8 +4,7 @@
   python3 costmodel/reproduce.py            all checks (about 10 minutes)
   python3 costmodel/reproduce.py --quick    without the PORS+FP searches (under a minute)
 
-Each line prints the computed value, the value in the paper (or, for the S5 rows that
-v0.09 of the paper does not print, the value this code is expected to give), and OK or DIFF.
+Each line prints the computed value, the value in the paper, and OK or DIFF.
 """
 import os
 import sys
@@ -91,7 +90,7 @@ def main(quick):
 
     section('Published sets of Kudinov and Nick, with their pruning rule')
     for q, (h, d, a, k, w), size, ref in [(40, (40, 5, 14, 11, 256), 4036, 'paper'),
-                                          (30, (32, 4, 14, 10, 256), 3440, 'K&N [1]')]:
+                                          (30, (32, 4, 14, 10, 256), 3440, 'K&N [2]')]:
         m = model.wc_porsfp_kn(h, d, k, a, w)
         check(f'q=2^{q} {(h, d, a, k, w)} size (B), mmax {m["mmax"]}', m['size'], size, ref)
         check(f'q=2^{q} security (bits)', model.security(q, h, k, a, 'PORS'), 128.0)
@@ -99,11 +98,11 @@ def main(quick):
     if quick:
         return
 
-    section('S5 (PORS+FP), policy V1, c = 2: not printed in v0.09 of the paper')
+    section('S5 (PORS+FP), policy V1, c = 2 (Table 3)')
     for q, want in ((64, 6428), (40, 4576), (30, 3900), (20, 3176)):
         r = search.best(q, 2, 'V1', 5)
         print('  ' + search.describe(q, 2, 'V1', 5, r))
-        check(f'q=2^{q} S5', r[0]['size'], want, 'expected')
+        check(f'q=2^{q} S5', r[0]['size'], want)
 
     section('S5 under policy V2, c = 4, q = 2^40 (the rule of Section 5.1, not that of K&N)')
     r = search.best(40, 4, 'V2', 5)
