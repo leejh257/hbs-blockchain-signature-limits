@@ -1,7 +1,7 @@
 """Size, cost and security of SLH-DSA and its variants (paper, Sections 3.2, 3.3 and 5.1).
 
 Costs are SHA-256 compression calls with the PK.seed midstate cached, as in the public
-model of BlockstreamResearch/SPHINCS-Parameters [8] at commit 3172178 (2026-11-16),
+model of BlockstreamResearch/SPHINCS-Parameters [9] at commit 3172178 (2026-11-16),
 the version before the "top layer saving" change of 2026-11-17. Set TOP_SAVE = True
 to follow the later version; the baseline signing cost then drops from 2,218,486 to
 2,218,200 compressions.
@@ -14,7 +14,7 @@ Schemes:
 
 Security follows equation (2) of the paper for FORS and FORS+C (k trees of 2^a
 leaves; FORS+C keeps the k of the underlying FORS), and the subset-forgery bound
-C(min(r*k, t), k) / C(t, k) of [8] for PORS+FP (one tree of t = k * 2^a leaves).
+C(min(r*k, t), k) / C(t, k) of [9] for PORS+FP (one tree of t = k * 2^a leaves).
 """
 from fractions import Fraction
 from functools import lru_cache
@@ -163,7 +163,7 @@ def wc_porsfp(h, d, k, a, w, mmax):
 
 
 def wc_porsfp_kn(h, d, k, a, w):
-    """PORS+FP with the pruning rule of Kudinov and Nick / [8]: from
+    """PORS+FP with the pruning rule of Kudinov and Nick [2] and [9]: from
     (k-1)*a - ceil(350/n) up, the first mmax whose signing costs less than
     1.11 times signing with FORS+C (at most 19 steps)."""
     fc = wc_forsc(h, d, k, a, w)['sg']

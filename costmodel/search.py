@@ -6,7 +6,7 @@ Stages are cumulative: each stage may use every option of the stages before it.
   S3  + WOTS+C
   S4  + FORS+C
   S5  + PORS+FP (pruning budget: the smallest mmax that keeps signing within the cap)
-S6 (BPORS+FP) and S7 (BPORS-C+BFP) need the coverage bounds of [5] and [6] and are not
+S6 (BPORS+FP) and S7 (BPORS-C+BFP) need the coverage bounds of [6] and [7] and are not
 included here.
 
 Constraints: signing <= c * baseline; policy V1: verification <= baseline (2,193);

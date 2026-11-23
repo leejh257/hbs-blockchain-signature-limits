@@ -10,7 +10,7 @@ Rules (--rule):
   exact      (recommended) compare log2 counts with the unrounded thresholds in both columns;
              keys active < 365 days keep their current count in the 30-year column.
   floor      round thresholds down to a power of two in both columns; same projection.
-  published  reproduces v0.05 exactly: 'now' columns floor-rounded, 30-year columns exact,
+  published  reproduces an earlier draft of the paper: 'now' columns floor-rounded, 30-year columns exact,
              and keys active < 365 days left out of the 30-year columns.
 
 Usage: python3 table7.py --data path/to/data [--rule exact] [--years 30]
@@ -21,7 +21,11 @@ import pandas as pd
 
 SINGLE_KEY = ['pubkeyhash', 'witness_v0_keyhash', 'witness_v1_taproot', 'pubkey', 'eoa']
 
-# name, nominal log2 q, t128 log2, t112 log2  (from the paper's parameter search)
+# name, nominal log2 q, t128 log2, t112 log2 (one decimal, as in Table 7 and Section 7).
+# costmodel/reproduce.py recomputes these thresholds with model.threshold for every row
+# except K&N at 2^20, S6 and S7. The S6 and S7 thresholds come from the author's
+# implementation of the coverage bounds of [6] and [7], which is not part of this
+# repository (see README, 'Not included').
 SETS = [
     ('SLH-DSA-128s',                             64, 64.7, 66.5),
     ('SHRINCS stateless',                        40, 40.9, 45.2),
