@@ -26,10 +26,10 @@ Code behind the decomposition of signature size (Tables 3 and 4) and the overuse
 
 | Path | Purpose |
 | --- | --- |
-| `setup_upstream.sh` | Clones BlockstreamResearch/SPHINCS-Parameters at commit `03949dd` into `third_party/` |
+| `setup_upstream.sh` | Clones BlockstreamResearch/SPHINCS-Parameters at commit `3172178`, the version cited in the paper, into `third_party/` |
 | `src/engine.py` | Shared cost model and FORS / PORS+FP security |
 | `src/bpors.py` | Acceptance probability, coverage bounds and security of BPORS+FP and BPORS-C+BFP |
-| `src/stages_s1_s5.py` | Search for stages S1 to S5 |
+| `src/stages_s1_s5.py` | Search for stages S1 to S5 (cross-check; see below) |
 | `src/stages_s6_s7.py` | Search for stages S6 and S7 (PORS+FP* is the single-bucket case, kept as a check) |
 | `src/thresholds.py` | Overuse thresholds t128 and t112 (Table 7) |
 | `src/summary.py` | Builds Tables 3 and 4 from the JSON results |
@@ -54,13 +54,20 @@ Single runs: `python3 src/stages_s6_s7.py V1 2 30` searches S6 and S7 at q = 2^3
 | Table 4 | `results/summary.md`, from the V1 results at caps 1, 2 and 4 |
 | Fig. 1 | the q = 2^30 row of Table 3 and the S3 stage of `s1_s5_V1_2.json` |
 | Table 7, thresholds | `results/thresholds.csv` |
-| Section 5.2, policy V2 | `results/summary.md`, from `s1_s5_V2_2.json` (caps 1 and 4 are included for completeness) |
+| Section 5.2, S5 and policy V2 | `costmodel/search.py` (see below); `s1_s5_V2_*.json` are a cross-check |
+
+## Grids
+
+- **S1 to S5** (`stages_s1_s5.py`): h from q − 10 to q + 8, d dividing h with h/d ≤ 22, a from 4 to 24 (to 20 for PORS+FP, with k·2^a ≤ 2^20), and the smallest k that reaches 128 bits.
+- **S6 and S7** (`stages_s6_s7.py`): w = 16, h from q − 4 to q + 8, d dividing h with h/d ≤ 22, K from 1 to 8, b from 0 to 16, k from 2 to 12 (S6) or 3 to 8 (S7), c in {2, 4, 8, 16} and E in {c/2, c, 2c, 3c} (S7), and the smallest t that reaches 128 bits. The pruning budget is the smallest one that keeps signing within the cap.
+
+`costmodel/search.py` searches S1 to S5 on the wider grid of Section 5.1 of the paper. Both searches give the same S1 to S4 for every budget and cap. For S5 the wider grid finds smaller signatures (3,900 B instead of 3,964 B at 2^30, cap 2), and the paper uses those values in Section 5.2 and Fig. 1.
 
 ## Validation
 
 - The model reproduces the published sizes of SLH-DSA-128s, the SP 800-230 128-24 set, the SHRINCS stateless set and the three W+C P+FP sets of Kudinov and Nick.
-- `bpors.py` reproduces the published figures of the two 2026 constructions. For BPORS+FP 128-24 it gives an acceptance probability of 2.20e-8 at 128 bits or more. For BPORS-C+BFP 128-24 it gives a coverage of 128.019 bits with an acceptance probability of 2.52e-8.
+- `bpors.py` reproduces the published figures of the two 2026 constructions. For BPORS+FP 128-24 it gives an acceptance probability of 2.20e-8 at 128.2 bits. For BPORS-C+BFP 128-24 it gives a coverage of 128.019 bits with an acceptance probability of 2.52e-8.
 
 ## Third-party code
 
-`third_party/SPHINCS-Parameters` is fetched, not redistributed. Its `third_party/octopus_pmf.py` comes from Abri and Katz's PORS-FP repository under the MIT license.
+`third_party/SPHINCS-Parameters` is fetched, not redistributed, and is ignored by git. Commits `03949dd` and `3172178` differ only in site tests and give identical results. Its `third_party/octopus_pmf.py` comes from Abri and Katz's PORS-FP repository under the MIT license.

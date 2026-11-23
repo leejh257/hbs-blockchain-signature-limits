@@ -15,7 +15,11 @@
 | 2 | 65% / 73% / 77% | 1,360 / 1,252 / 1,208 | 3,276 |
 | 4 | 65% / 74% / 78% | 1,444 / 1,220 / 1,176 | 3,212 |
 
-## Policy V2 (Section 5.2), signing cap 2
+## Policy V2, signing cap 2 (cross-check)
+
+This search uses a narrower grid than Section 5.1 for S5 (PORS+FP). The S5 sizes and the
+policy V2 figures of Section 5.2 come from costmodel/search.py, which reports a largest
+further saving of 396 B and verification costs of 6,272 to 12,492 compressions.
 
 - Largest further saving from w = 256: 428 B (30|S5 +PORS+FP)
 - Verification cost of the w = 256 sets: 6,274 to 12,492 compressions
