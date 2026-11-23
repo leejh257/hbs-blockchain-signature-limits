@@ -45,7 +45,10 @@ if __name__ == '__main__':
         rs = [row(a, b, q) for q in (40, 30, 20)]
         print(f"| {cap} | " + ' / '.join(f"{r['share']:.0%}" for r in rs) + ' | '
               + ' / '.join(f"{r['variants']:,}" for r in rs) + f" | {rs[1]['s7']:,} |")
-    print('\n## Policy V2 (Section 5.2), signing cap 2\n')
+    print('\n## Policy V2, signing cap 2 (cross-check)\n')
+    print('This search uses a narrower grid than Section 5.1 for S5 (PORS+FP). The S5 sizes and the')
+    print('policy V2 figures of Section 5.2 come from costmodel/search.py, which reports a largest')
+    print('further saving of 396 B and verification costs of 6,272 to 12,492 compressions.\n')
     a = json.load(open(os.path.join(R, 's1_s5_V1_2.json')))
     v = json.load(open(os.path.join(R, 's1_s5_V2_2.json')))
     gains = [(a[k]['size'] - v[k]['size'], k, v[k]['sv']) for k in a if a[k] and v[k]]

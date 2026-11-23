@@ -4,10 +4,10 @@
 Uses the 'tail' rows (the 5,000 heaviest keys per chain, exact counts and active days).
 The tail is complete for every threshold in Table 7: its smallest count is 2^13.84 (Bitcoin,
 single-key types) and 2^14.89 (Ethereum), and even a one-year key at that count projects
-to at most 2^19.8 over 30 years, below the smallest threshold 2^20.1.
+to at most 2^19.8 over 30 years, below the smallest threshold 2^20.0.
 
 Rules (--rule):
-  exact      (recommended) compare log2 counts with the unrounded thresholds in both columns;
+  exact      (recommended) compare log2 counts with the thresholds as listed (one decimal) in both columns;
              keys active < 365 days keep their current count in the 30-year column.
   floor      round thresholds down to a power of two in both columns; same projection.
   published  reproduces an earlier draft of the paper: 'now' columns floor-rounded, 30-year columns exact,
@@ -21,24 +21,22 @@ import pandas as pd
 
 SINGLE_KEY = ['pubkeyhash', 'witness_v0_keyhash', 'witness_v1_taproot', 'pubkey', 'eoa']
 
-# name, nominal log2 q, t128 log2, t112 log2 (one decimal, as in Table 7 and Section 7).
-# costmodel/reproduce.py recomputes these thresholds with model.threshold for every row
-# except K&N at 2^20, S6 and S7. The S6 and S7 thresholds come from the author's
-# implementation of the coverage bounds of [6] and [7], which is not part of this
-# repository (see README, 'Not included').
+# name, nominal log2 q, t128 log2, t112 log2 (one decimal, as in Table 7 and Section 7),
+# copied from search/results/thresholds.csv (search/src/thresholds.py). All rows except
+# K&N at 2^20, S6 and S7 are also recomputed by costmodel/reproduce.py.
 SETS = [
     ('SLH-DSA-128s',                             64, 64.7, 66.5),
     ('SHRINCS stateless',                        40, 40.9, 45.2),
     ('K&N W+C P+FP',                             40, 41.3, 43.4),
     ('FIPS-only, 2x signing cap (33, 3, 15, 9)', 30, 31.1, 34.7),
     ('K&N W+C P+FP',                             30, 31.3, 34.1),
-    ('BPORS-C+BFP, 2x signing cap (S7)',         30, 30.1, 34.6),
+    ('BPORS-C+BFP, 2x signing cap (S7)',         30, 30.1, 34.5),
     ('SP 800-230 128-24',                        24, 24.1, 27.2),
     ('FIPS-only (26, 2, 15, 9)',                 24, 24.1, 27.7),
     ('FIPS-only, 2x signing cap (22, 2, 15, 9)', 20, 20.1, 23.7),
     ('K&N W+C P+FP',                             20, 21.0, 25.1),
-    ('BPORS+FP, 2x signing cap (S6)',            20, 20.1, 24.8),
-    ('BPORS-C+BFP, 2x signing cap (S7)',         20, 20.1, 24.1),
+    ('BPORS+FP, 2x signing cap (S6)',            20, 20.0, 24.8),
+    ('BPORS-C+BFP, 2x signing cap (S7)',         20, 20.0, 24.0),
 ]
 
 
