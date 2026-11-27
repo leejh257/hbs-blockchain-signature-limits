@@ -6,6 +6,12 @@ Queries, results and analysis scripts for the measurement, and the cost model an
 
 The measurement counts how many on-chain signatures each key has produced over the complete history of Bitcoin and Ethereum, up to the October 2026 partition of the public BigQuery datasets. The paper uses these counts to choose the per-key signature limit (signature budget) of hash-based signatures for transaction authorization.
 
+Related repository: the six-month cross-chain workload measurement, fee model, parameter search and
+on-chain gas measurement of the follow-up study "Workload-Aware Parameter Optimization of
+Hash-Based Signatures for Blockchain Transactions" are in
+[hbs-workload](https://github.com/leejh257/hbs-workload). That study takes its Bitcoin lifetime
+counts from `data/btc_all.csv`.
+
 ## Contents
 
 | Path | Description |
